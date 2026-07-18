@@ -8,15 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddSingleton<DateTimeProvider>();
+builder.Services.AddTransient<DateTimeProvider>();
 var app = builder.Build();
 
-app.MapGet("/time", (DateTimeProvider provider) =>
+app.MapGet("/time", (
+    DateTimeProvider provider1,
+    DateTimeProvider provider2) =>
 {
     return Results.Ok(new
     {
-        provider.Id,
-        provider.Now
+        Provider1 = provider1.Id,
+        Provider2 = provider2.Id,
+        SameObject = ReferenceEquals(provider1, provider2)
     });
 });
 
