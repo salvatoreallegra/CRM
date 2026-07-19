@@ -9,18 +9,13 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddTransient<DateTimeProvider>();
+builder.Services.AddSingleton<CustomerService>();
+
 var app = builder.Build();
 
-app.MapGet("/time", (
-    DateTimeProvider provider1,
-    DateTimeProvider provider2) =>
+app.MapGet("/time", (CustomerService service) =>
 {
-    return Results.Ok(new
-    {
-        Provider1 = provider1.Id,
-        Provider2 = provider2.Id,
-        SameObject = ReferenceEquals(provider1, provider2)
-    });
+    return Results.Ok(service.GetServerTime());
 });
 
 // Configure the HTTP request pipeline.
