@@ -1,0 +1,5 @@
+IF DB_ID('CrmDb') IS NULL
+BEGIN
+    CREATE DATABASE CrmDb;
+END;
+GO
