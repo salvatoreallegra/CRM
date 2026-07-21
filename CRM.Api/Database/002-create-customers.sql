@@ -1,0 +1,18 @@
+USE CrmDb;
+GO
+
+CREATE TABLE Customers
+(
+    Id INT IDENTITY(1,1) NOT NULL,
+    FirstName NVARCHAR(100) NOT NULL,
+    LastName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(255) NULL,
+    Phone NVARCHAR(50) NULL,
+    CreatedAtUtc DATETIME2 NOT NULL
+        CONSTRAINT DF_Customers_CreatedAtUtc
+        DEFAULT SYSUTCDATETIME(),
+
+    CONSTRAINT PK_Customers
+        PRIMARY KEY (Id)
+);
+GO
