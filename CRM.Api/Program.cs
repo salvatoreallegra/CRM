@@ -8,17 +8,47 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddTransient<DateTimeProvider>();
-builder.Services.AddSingleton<CustomerService>();
+builder.Services.AddScoped<DateTimeProvider>();
+builder.Services.AddScoped<CustomerService>();
 
 var app = builder.Build();
 
-app.MapGet("/time", (CustomerService service) =>
+app.Use(async (context, next) =>
 {
-    return Results.Ok(service.GetServerTime());
+    Console.WriteLine("Entering A");
+
+    await next();
+
+    Console.WriteLine("Leaving A");
 });
 
-// Configure the HTTP request pipeline.
+app.Use(async (context, next) =>
+{
+    Console.WriteLine("Entering B");
+
+    await next();
+
+    Console.WriteLine("Leaving B");
+});
+
+app.Use(async (context, next) =>
+{
+    Console.WriteLine("Entering C");
+
+    await next();
+
+    Console.WriteLine("Leaving C");
+});
+
+app.MapGet("/time", () =>
+{
+    Console.WriteLine("***** ENDPOINT *****");
+
+    return Results.Ok("Hello");
+});
+
+// Configure the HTTP app.Use(async (context, next) =>
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
