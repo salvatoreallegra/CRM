@@ -56,6 +56,7 @@ app.MapGet("/time", () =>
     return Results.Ok("Hello");
 });
 
+
 app.MapControllers();
 
 app.Run();
