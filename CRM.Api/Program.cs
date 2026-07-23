@@ -1,12 +1,23 @@
 using CRM.Api;
+using CRM.Api.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-builder.Services.AddSingleton<DateTimeProvider>();
-builder.Services.AddSingleton<CustomerService>();
+builder.Services.AddControllers();
+builder.Services.AddOpenApi();
+
+builder.Services.AddDbContext<CrmDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("CrmDatabase")));
+
+builder.Services.AddTransient<DateTimeProvider>();
+builder.Services.AddScoped<CustomerService>();
+
+
 
 var app = builder.Build();
 
